@@ -1,11 +1,12 @@
-from ftplib import all_errors
+import os
 
 from aiogram import Router, F
 from aiogram.enums import ContentType
 from aiogram.types import Message
+
 from bot.keyboard.menu import menu_keyboard
-from bot.services.audioRecognition import AudioRecognition
 from bot.services.audioConverter import ConvertMusic
+from bot.services.audioRecognition import AudioRecognition
 from bot.services.randomNameGenerator import generate_random_filename
 
 router = Router(name="recognizer")
@@ -39,7 +40,7 @@ async def recognize_song(message: Message):
 
         # Recognize the song from the MP3 file
         response = await recognizer.get_formatted_response(mp3_file_path)
-
+        os.remove(mp3_file_path)
         # Send the response to the user
         await message.answer(response, reply_markup=menu_keyboard)
 

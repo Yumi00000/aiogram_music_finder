@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import audioread
 from typing import Dict, Optional
 
 from acrcloud.recognizer import ACRCloudRecognizer
@@ -22,6 +23,13 @@ class AudioRecognition:
             "timeout": 10,
         }
         self.acrcloud = ACRCloudRecognizer(self.config)
+
+    @staticmethod
+    def calculate_song_length(song):
+        with audioread.audio_open(song) as audio:
+            totalsec = audio.duration
+
+        return totalsec
 
     def recognize_audio(self, file_path: str) -> str:
         """Send an audio file to ACRCloud for recognition."""
@@ -72,16 +80,20 @@ class AudioRecognition:
         """Format and return extracted song details as a Telegram-friendly message."""
         try:
             # Perform audio recognition asynchronously
+            totalsec = AudioRecognition.calculate_song_length(file_path)
+            if totalsec < 10:
+                return "❌ Sorry, the song could not be recognized. Please send longest audio/record/video."
             response = await AudioRecognition().recognize_audio_async(file_path)
             data = json.loads(response)  # Convert JSON string to dict
-
             # Check if the response contains valid metadata
             if data.get("status", {}).get("code") != 0:
                 logger.warning(f"ACRCloud API returned an error: {data.get('status', {}).get('msg')}")
                 return "❌ Sorry, the song could not be recognized. Please try again with a clearer audio sample."
 
             # Extract song details from the response
-            songs = data.get("metadata", {}).get("music", [])
+            songs = data.get("metadata", {}).get("humming", []) or data.get("metadata", {}).get(
+                "music", []
+            )  # Look for "humming" instead of "music"
             if not songs:
                 return "❌ No matching song found. Please try again with a different audio sample."
 

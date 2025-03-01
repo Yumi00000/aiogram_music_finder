@@ -1,6 +1,6 @@
 import asyncio
-import os
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ class ConvertMusic:
     @staticmethod
     async def save_and_convert_to_mp3(file_id: str, file_name: str, bot) -> str:
         """Download a file and convert it to MP3 format."""
-        temp_file_path = f"../downloads/{file_name}"
+        temp_file_path = f"/home/yumi/PycharmProjects/aiogram_music_finder/bot/downloads/{file_name}"
         try:
             # Get file info
             file_path = await bot.get_file(file_id)
@@ -53,7 +53,7 @@ class ConvertMusic:
             await bot.download_file(file_path.file_path, destination=temp_file_path)
 
             # Convert the file to MP3
-            mp3_file_path = f"../downloads/{file_name}.mp3"
+            mp3_file_path = f"/home/yumi/PycharmProjects/aiogram_music_finder/bot/downloads/{file_name}.mp3"
             await ConvertMusic.convert(temp_file_path, mp3_file_path)
 
             return mp3_file_path
