@@ -2,12 +2,12 @@ import asyncio
 import json
 import logging
 import os
-import audioread
 from typing import Dict, Optional
 
+import audioread
 from acrcloud.recognizer import ACRCloudRecognizer
 
-from bot.core.configure import ACCESS_KEY, ACCESS_SECRET
+from bot.core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +17,8 @@ class AudioRecognition:
         """Initialize the ACRCloud recognizer with the provided configuration."""
         self.config = {
             "host": "identify-eu-west-1.acrcloud.com",
-            "access_key": ACCESS_KEY,
-            "access_secret": ACCESS_SECRET,
+            "access_key": settings.ACRCLOUD_ACCESS_KEY,
+            "access_secret": settings.ACRCLOUD_SECRET_KEY,
             "debug": True,
             "timeout": 10,
         }
@@ -53,7 +53,7 @@ class AudioRecognition:
         release_date = song_info.get("release_date", "Unknown Date")
         label = song_info.get("label", "Unknown Label")
         links = song_info.get("links", {})
-
+        print(song_info)
         # Format the message with emojis and Markdown
         message = (
             f"🎵 *Title*: {title}\n"
