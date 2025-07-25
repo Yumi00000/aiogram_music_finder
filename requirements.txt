@@ -27,3 +27,4 @@ yarl==1.18.3
 
 pydantic-settings~=2.10.1
 SQLAlchemy~=2.0.41
+asyncpg~=0.30.0

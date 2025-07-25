@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy import URL
 
 DIR = Path(__file__).absolute().parent.parent.parent
 API_DIR = Path(__file__).absolute().parent.parent
@@ -24,10 +25,16 @@ class DBSettings(EnvBaseSettings):
     DB_NAME: str
 
     @property
-    def database_url_psycopg2(self) -> str:
+    def database_url(self) -> URL | str:
         if self.DB_PASS:
-            return f"postgresql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
-        return f"postgresql://{self.DB_USER}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+            return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return f"postgresql+asyncpg://{self.DB_USER}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
+    @property
+    def local_database_url(self) -> URL | str:
+        if self.DB_PASS:
+            return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@localhost:6432/{self.DB_NAME}"
+        return f"postgresql+asyncpg://{self.DB_USER}@localhost:6432/{self.DB_NAME}"
 
 
 class Settings(BotSettings, DBSettings):
