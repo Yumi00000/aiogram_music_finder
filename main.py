@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 async def main():
     # Initialize the bot and dispatcher
-    bot = Bot(token=settings.bot_token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
+    bot = Bot(token=settings.TELEGRAM_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher()
 
     # Register handlers

@@ -16,11 +16,11 @@ class AudioRecognition:
     def __init__(self):
         """Initialize the ACRCloud recognizer with the provided configuration."""
         self.config = {
-            "host": "identify-eu-west-1.acrcloud.com",
-            "access_key": settings.access_key,
-            "access_secret": settings.access_secret,
-            "debug": True,
-            "timeout": 10,
+            "host": settings.acr_host,
+            "access_key": settings.ACRCLOUD_ACCESS_KEY,
+            "access_secret": settings.ACRCLOUD_SECRET_KEY,
+            "debug": settings.DEBUG,
+            "timeout": settings.acr_timeout,
         }
         self.acrcloud = ACRCloudRecognizer(self.config)
 

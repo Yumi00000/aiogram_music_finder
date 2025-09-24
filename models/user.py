@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, BigInteger, String, Boolean, DATETIME
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, DATETIME, TIMESTAMP
 
 from bot.core.configure import Base
 
@@ -9,4 +9,4 @@ class UserModel(Base):
     telegram_id= Column(BigInteger, unique=True, nullable=False)
     username = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at= Column(DATETIME, nullable=False)
+    created_at= Column(TIMESTAMP, nullable=False)
