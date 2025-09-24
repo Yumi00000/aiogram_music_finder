@@ -24,3 +24,6 @@ requests==2.32.3
 typing_extensions==4.12.2
 urllib3==2.3.0
 yarl==1.18.3
+
+pydantic-settings~=2.10.1
+SQLAlchemy~=2.0.41

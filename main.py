@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from bot.core.configure import bot_token
+from bot.core.configure import settings
 from bot.handlers.recognizerHandler import router as recognize_song_router
 from bot.handlers.startHandler import router as start_router
 
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 async def main():
     # Initialize the bot and dispatcher
-    bot = Bot(token=bot_token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
+    bot = Bot(token=settings.bot_token, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
     dp = Dispatcher()
 
     # Register handlers

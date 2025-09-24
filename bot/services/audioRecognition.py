@@ -7,7 +7,7 @@ from typing import Dict, Optional
 
 from acrcloud.recognizer import ACRCloudRecognizer
 
-from bot.core.configure import ACCESS_KEY, ACCESS_SECRET
+from bot.core.configure import settings
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +17,8 @@ class AudioRecognition:
         """Initialize the ACRCloud recognizer with the provided configuration."""
         self.config = {
             "host": "identify-eu-west-1.acrcloud.com",
-            "access_key": ACCESS_KEY,
-            "access_secret": ACCESS_SECRET,
+            "access_key": settings.access_key,
+            "access_secret": settings.access_secret,
             "debug": True,
             "timeout": 10,
         }
