@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from bot.services.helpers import safe_artists, safe_genres
+from utils.helpers import safe_artists, safe_genres
 
 def parse_song(acr_song: Dict[str, Any]) -> Dict[str, Any]:
     song_info = {

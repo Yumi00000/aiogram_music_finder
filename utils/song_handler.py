@@ -1,7 +1,7 @@
 import logging
 from bot.services.audioRecognition import AudioRecognition
-from bot.services.song_parser import parse_song
-from bot.services.telegram_formatter import format_song_for_telegram
+from utils.song_parser import parse_song
+from utils.telegram_formatter import format_song_for_telegram
 from bot.repositories.song_repo import create_song
 
 logger = logging.getLogger(__name__)

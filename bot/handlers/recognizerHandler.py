@@ -9,7 +9,7 @@ from bot.repositories.history_repo import create_history
 from bot.services.audioConverter import ConvertMusic
 from bot.services.audioRecognition import AudioRecognition
 from bot.services.randomNameGenerator import generate_random_filename
-from bot.services.song_handler import handle_recognized_song
+from utils.song_handler import handle_recognized_song
 
 router = Router(name="recognizer")
 
