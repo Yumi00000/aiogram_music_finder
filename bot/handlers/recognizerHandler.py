@@ -5,9 +5,11 @@ from aiogram.enums import ContentType
 from aiogram.types import Message
 
 from bot.keyboard.menu import menu_keyboard
+from bot.repositories.history_repo import create_history
 from bot.services.audioConverter import ConvertMusic
 from bot.services.audioRecognition import AudioRecognition
 from bot.services.randomNameGenerator import generate_random_filename
+from utils.song_handler import handle_recognized_song
 
 router = Router(name="recognizer")
 
@@ -39,7 +41,8 @@ async def recognize_song(message: Message):
         mp3_file_path = await convert.save_and_convert_to_mp3(file_id, file_name, message.bot)
 
         # Recognize the song from the MP3 file
-        response = await recognizer.get_formatted_response(mp3_file_path)
+        response, song_id = await handle_recognized_song(mp3_file_path)
+        await create_history(user_id, song_id)
         os.remove(mp3_file_path)
         # Send the response to the user
         await message.answer(response, reply_markup=menu_keyboard)
