@@ -7,7 +7,7 @@ from bot.repositories.song_repo import create_song
 logger = logging.getLogger(__name__)
 
 
-async def handle_recognized_song(file_path: str) -> str:
+async def handle_recognized_song(file_path: str):
     audio_service = AudioRecognition()
 
     duration = audio_service.calculate_song_length(file_path)
@@ -30,9 +30,8 @@ async def handle_recognized_song(file_path: str) -> str:
 
     song_info = parse_song(songs[0])
 
-    try:
-        await create_song(**song_info)
-    except Exception as e:
-        logger.error(f"DB save error: {e}")
 
-    return format_song_for_telegram(song_info)
+    song = await create_song(**song_info)
+    song_id = song.acrid if song else None
+
+    return format_song_for_telegram(song_info), song_id

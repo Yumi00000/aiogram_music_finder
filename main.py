@@ -8,7 +8,7 @@ from aiogram.enums import ParseMode
 from bot.core.configure import settings
 from bot.handlers.recognizerHandler import router as recognize_song_router
 from bot.handlers.startHandler import router as start_router
-
+from bot.handlers.historyHandler import router as history_router
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,6 +25,7 @@ async def main():
     # Register handlers
     dp.include_router(recognize_song_router)
     dp.include_router(start_router)
+    dp.include_router(history_router)
     # Start polling for updates
     await dp.start_polling(bot)
 

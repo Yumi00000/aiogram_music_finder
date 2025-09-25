@@ -14,4 +14,4 @@ class SongModel(Base):
     genres = Column(JSON, nullable=True)
     duration = Column(Integer, nullable=True)
     links = Column(JSON, nullable=True)
-    acrid = Column(String, unique=True, nullable=True)
+    acrid = Column(String, unique=True, nullable=False)
