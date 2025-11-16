@@ -1,11 +1,16 @@
 from typing import Dict, Any
 from utils.helpers import safe_artists, safe_genres
 
+
 def parse_song(acr_song: Dict[str, Any]) -> Dict[str, Any]:
     song_info = {
         "title": acr_song.get("title", "Unknown Title"),
         "artists": safe_artists(acr_song.get("artists")),
-        "album": acr_song.get("album", {}).get("name", "Unknown Album") if isinstance(acr_song.get("album"), dict) else acr_song.get("album"),
+        "album": (
+            acr_song.get("album", {}).get("name", "Unknown Album")
+            if isinstance(acr_song.get("album"), dict)
+            else acr_song.get("album")
+        ),
         "release_date": acr_song.get("release_date", "Unknown Date"),
         "duration_ms": acr_song.get("duration_ms"),
         "genres": safe_genres(acr_song.get("genres")),

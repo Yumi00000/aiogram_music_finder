@@ -1,0 +1,61 @@
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: music_finder_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS:-postgres}
+      POSTGRES_DB: ${DB_NAME:-music_finder}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: music_finder_bot
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASS: ${DB_PASS:-postgres}
+      DB_NAME: ${DB_NAME:-music_finder}
+      
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      
+      ACRCLOUD_ACCESS_KEY: ${ACRCLOUD_ACCESS_KEY}
+      ACRCLOUD_SECRET_KEY: ${ACRCLOUD_SECRET_KEY}
+      
+      DEBUG: ${DEBUG:-True}
+    volumes:
+      - ./bot/downloads:/app/bot/downloads
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    command: >
+      sh -c "
+        echo 'Waiting for database to be ready...' &&
+        sleep 5 &&
+        echo 'Running database migrations...' &&
+        alembic upgrade head &&
+        echo 'Starting bot...' &&
+        python main.py
+      "
+
+volumes:
+  postgres_data:
+    driver: local
+

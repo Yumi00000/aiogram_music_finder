@@ -9,6 +9,7 @@ from bot.core.configure import settings
 from bot.handlers.recognizerHandler import router as recognize_song_router
 from bot.handlers.startHandler import router as start_router
 from bot.handlers.historyHandler import router as history_router
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

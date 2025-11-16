@@ -1,3 +1,5 @@
+from pathlib import Path
+from typing import ClassVar
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.orm import declarative_base
@@ -29,9 +31,7 @@ class DB_Settings(EnvBaseSettings):
 
     @property
     def db_url(self):
-        return (
-            f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS.get_secret_value()}@{self.DB_HOST}:{self.db_port}/{self.DB_NAME}"
-        )
+        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS.get_secret_value()}@{self.DB_HOST}:{self.db_port}/{self.DB_NAME}"
 
 
 class Settings(AcrCloudSettings, TelegramSettings, DB_Settings):
@@ -41,8 +41,13 @@ class Settings(AcrCloudSettings, TelegramSettings, DB_Settings):
         extra="ignore",
         case_sensitive=False,
     )
-
     DEBUG: bool = True
+    PROJECT_ROOT: ClassVar[Path] = Path(__file__).resolve().parent.parent.parent
+    DOWNLOADS_DIR: ClassVar[Path] = PROJECT_ROOT / "bot" / "downloads"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 settings = Settings()
