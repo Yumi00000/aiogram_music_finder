@@ -8,6 +8,7 @@ from bot.core.configure import settings
 
 logger = logging.getLogger(__name__)
 
+
 class AudioRecognition:
     def __init__(self):
         self.config = {

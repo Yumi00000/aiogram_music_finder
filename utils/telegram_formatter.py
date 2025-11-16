@@ -1,6 +1,7 @@
 from schemas.SongSchema import SongSchema
 from models.song import SongModel
 
+
 def format_song_for_telegram(song: SongSchema | SongModel | dict) -> str:
     if isinstance(song, dict):
         song = SongSchema(**song)

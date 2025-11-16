@@ -30,7 +30,6 @@ async def handle_recognized_song(file_path: str):
 
     song_info = parse_song(songs[0])
 
-
     song = await create_song(**song_info)
     song_id = song.acrid if song else None
 

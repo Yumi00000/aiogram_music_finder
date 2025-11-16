@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+from bot.core.configure import settings
 
 logger = logging.getLogger(__name__)
 
@@ -26,16 +27,12 @@ class ConvertMusic:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
-
             stdout, stderr = await process.communicate()
-
             if process.returncode != 0:
                 logger.error(f"FFmpeg conversion failed: {stderr.decode()}")
                 raise RuntimeError(f"FFmpeg conversion failed: {stderr.decode()}")
-
             logger.info(f"File converted successfully: {mp3_file_path}")
             return mp3_file_path
-
         except Exception as e:
             logger.error(f"Error during audio conversion: {e}")
             raise
@@ -43,26 +40,17 @@ class ConvertMusic:
     @staticmethod
     async def save_and_convert_to_mp3(file_id: str, file_name: str, bot) -> str:
         """Download a file and convert it to MP3 format."""
-        temp_file_path = f"/home/yumi/PycharmProjects/aiogram_music_finder/bot/downloads/{file_name}"
+        temp_file_path = str(settings.DOWNLOADS_DIR / file_name)
         try:
-            # Get file info
             file_path = await bot.get_file(file_id)
-
-            # Save the file temporarily
-
             await bot.download_file(file_path.file_path, destination=temp_file_path)
-
-            # Convert the file to MP3
-            mp3_file_path = f"/home/yumi/PycharmProjects/aiogram_music_finder/bot/downloads/{file_name}.mp3"
+            mp3_file_path = str(settings.DOWNLOADS_DIR / f"{file_name}.mp3")
             await ConvertMusic.convert(temp_file_path, mp3_file_path)
-
             return mp3_file_path
-
         except Exception as e:
             logger.error(f"Error during file processing: {e}")
             raise
         finally:
-            # Clean up the temporary file
             if os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
                 logger.info(f"Temporary file removed: {temp_file_path}")

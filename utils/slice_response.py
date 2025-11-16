@@ -1,12 +1,13 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+
 def paginate_response(items: list, page: int = 0, page_size: int = 5):
     start = page * page_size
     end = start + page_size
     page_items = items[start:end]
 
     response = "📜 *Your recognition history:*\n\n"
-    for i, entry in enumerate(page_items, start=start+1):
+    for i, entry in enumerate(page_items, start=start + 1):
         response += entry + "\n\n"
 
     buttons = []

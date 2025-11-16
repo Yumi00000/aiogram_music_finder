@@ -1,6 +1,7 @@
 from typing import Optional, Dict, Any
 from pydantic import BaseModel
 
+
 class SongSchema(BaseModel):
     title: str
     artist: Optional[str] = None
