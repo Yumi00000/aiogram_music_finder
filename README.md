@@ -34,6 +34,11 @@ A Telegram bot based on aiogram for music recognition and search from audio mess
 python main.py
 ```
 
+## Docker
+```bash
+docker compose up -d
+```
+
 ## Project Structure
 - `main.py` — entry point
 - `bot/` — bot logic, handlers, services, keyboards
