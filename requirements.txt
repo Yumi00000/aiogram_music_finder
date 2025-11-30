@@ -29,3 +29,10 @@ pydantic-settings~=2.10.1
 SQLAlchemy~=2.0.41
 asyncpg~=0.30.0
 alembic~=1.16.5
+
+# Testing dependencies
+pytest~=8.3.4
+pytest-asyncio~=0.24.0
+pytest-cov~=6.0.0
+pytest-mock~=3.14.0
+aiosqlite~=0.20.0
